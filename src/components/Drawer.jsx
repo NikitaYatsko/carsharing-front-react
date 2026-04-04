@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
-import Button from '@mui/material/Button';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -10,43 +9,53 @@ import ListItemText from '@mui/material/ListItemText';
 import Divider from '@mui/material/Divider';
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
-import Stack from '@mui/material/Stack';
 import MenuIcon from '@mui/icons-material/Menu';
-// Иконки для меню
 import PeopleIcon from '@mui/icons-material/People';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import GavelIcon from '@mui/icons-material/Gavel';
-import { Link } from "react-router-dom";
-export default function TemporaryDrawer({user}) {
+import CarRentalIcon from '@mui/icons-material/CarRental';
+import {Link, useNavigate} from "react-router-dom";
+import {useUser} from '../contexts/UserContext';
+
+
+export default function TemporaryDrawer() {
     const [open, setOpen] = React.useState(false);
 
     const toggleDrawer = (newOpen) => () => {
         setOpen(newOpen);
     };
 
-    // Пункты меню
+    const {user} = useUser();
+
+    const navigate = useNavigate();
+
+
     const menuItems = [
-        { text: "Список пользователей", icon: <PeopleIcon />, path: "/users" },
-        { text: "Список Аренд", icon: <ListAltIcon />, path: "/bookings" },
-        { text: "Мои Аренды", icon: <AssignmentIcon />, path: "/bookings" },
-        { text: "Заявки ВУ", icon: <GavelIcon />, path: "/cars" },
+        {text: "Список пользователей", icon: <PeopleIcon/>, path: "/users"},
+        {text: "Список Аренд", icon: <ListAltIcon/>, path: "/bookings"},
+        {text: "Мои Аренды", icon: <AssignmentIcon/>, path: "/bookings/my"},
+        {text: "Список Машин", icon: <CarRentalIcon/>, path: "/cars"},
+
     ];
+
+    function toProfile() {
+        navigate("/profile/me");
+    }
 
     const DrawerList = (
         <Box sx={{width: 250}} role="presentation" onClick={toggleDrawer(false)}>
 
             <Box sx={{p: 2, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
-                <Avatar
-                    src={user?.avatar || '/static/images/avatar/2.jpg'}
-                    alt={user?.name || 'User'}
-                    sx={{width: 64, height: 64, mb: 1}}
+                <Avatar onClick={() => toProfile()}
+                        src={user?.photoUrl || '/static/images/avatar/2.jpg'}
+                        alt={user?.firstName || 'User'}
+                        sx={{width: 64, height: 64, mb: 1,cursor: 'pointer'}}
                 />
                 <Typography variant="subtitle1" fontWeight={600}>
-                    {user?.name || 'Имя пользователя'}
+                    {user?.firstName || 'Имя пользователя'}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                    {user?.role || 'Роль'}
+                    {user?.username || 'Роль'}
                 </Typography>
             </Box>
             <Divider/>
@@ -57,10 +66,10 @@ export default function TemporaryDrawer({user}) {
                         <ListItem disablePadding>
                             <ListItemButton component={Link} to={item.path}>
                                 <ListItemIcon>{item.icon}</ListItemIcon>
-                                <ListItemText primary={item.text} />
+                                <ListItemText primary={item.text}/>
                             </ListItemButton>
                         </ListItem>
-                        {index < menuItems.length - 1 && <Divider />}
+                        {index < menuItems.length - 1 && <Divider/>}
                     </React.Fragment>
                 ))}
             </List>
