@@ -20,6 +20,11 @@ export const lightTheme = createTheme({
             primary: "#1C1C1C",
             secondary: "#4F4F4F",
         },
+        status: {
+            available: "#4CAF50",   // зелёный
+            busy: "#FF9800",        // оранжевый
+            unavailable: "#F44336", // красный
+        },
     },
     typography: {
         fontFamily: "'Segoe UI', Roboto, sans-serif",
@@ -63,6 +68,10 @@ export const darkTheme = createTheme({
         text: {
             primary: "#FFFFFF",
             secondary: "#BBBBBB",
+        },status: {
+            available: "#05730a",   // зелёный
+            busy: "#955902",        // оранжевый
+            unavailable: "#7c0900", // красный
         },
     },
     typography: {
